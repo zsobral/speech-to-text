@@ -1,5 +1,6 @@
 import { assemblyAi } from "@/app/assembly-ai-client";
 import TranscriptResult from "./transcript-result";
+import ProcessingAudio from "./processing";
 
 export default async function Transcript({
   params,
@@ -8,6 +9,10 @@ export default async function Transcript({
 }) {
   const id = (await params).id;
   const transcript = await assemblyAi.transcripts.get(id);
+
+  if (transcript.status !== "completed") {
+    return <ProcessingAudio />;
+  }
 
   return (
     <div className="bg-gray-50">

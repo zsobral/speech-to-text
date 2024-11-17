@@ -12,7 +12,7 @@ export async function transcribeAction(
 ): Promise<TranscribeActionState> {
   const audioUrl = formData.get("audio-url") as string;
 
-  const result = await assemblyAi.transcripts.transcribe({
+  const result = await assemblyAi.transcripts.submit({
     audio_url: audioUrl,
     content_safety: true,
     speaker_labels: true,
