@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -14,5 +15,10 @@ export default function ProcessingAudio() {
     return () => clearInterval(intervalId);
   }, [router]);
 
-  return <div className="flex justify-center py-10">processing...</div>;
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <Image src="/spinner.svg" alt="spinner" width={24} height={24} priority />
+      <div>Please wait while the audio is being processed...</div>
+    </div>
+  );
 }
