@@ -22,6 +22,13 @@ export default async function Home() {
         >
           steves.mp3
         </Link>
+
+        <Link
+          className="text-blue-500 hover:underline block"
+          href="transcripts/3c4132c4-d26b-4094-9c59-704f49c89f7c"
+        >
+          kids.mp3
+        </Link>
       </div>
     </div>
   );

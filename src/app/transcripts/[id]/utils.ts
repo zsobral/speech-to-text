@@ -1,23 +1,3 @@
-
-export function findNearestIndex(arr: Array<number>, target: number) {
-  let left = 0;
-  let right = arr.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    const diffLeft = Math.abs(arr[mid] - target);
-    const diffRight = Math.abs(arr[mid + 1] - target);
-
-    if (diffLeft <= diffRight) {
-      right = mid - 1;
-    } else {
-      left = mid + 1;
-    }
-  }
-
-  return left;
-}
-
 export function contentModeration(value: string) {
   return {
     accidents: {
