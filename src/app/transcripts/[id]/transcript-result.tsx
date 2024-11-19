@@ -16,7 +16,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { contentModeration } from "./utils";
+import { contentModeration, isElementVisible } from "./utils";
+import { Checkbox } from "@/app/ui/checkbox";
+import { H1, H2 } from "@/app/ui/typography";
+import { Divider } from "@/app/ui/divider";
 
 export default function TranscriptResult({
   transcript,
@@ -28,8 +31,6 @@ export default function TranscriptResult({
   const [showContentSafety, setShowContentSafety] = useState<boolean>(false);
   const [showSentimentalAnalysis, setShowSentimentalAnalysis] =
     useState<boolean>(false);
-
-  console.log(transcript);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -50,44 +51,28 @@ export default function TranscriptResult({
       <div className="fixed bottom-0 py-4 bg-white border-t w-full">
         <div className="max-w-screen-md mx-auto">
           <div className="flex justify-center mb-2">
-            <div className="flex items-center">
-              <input
-                id="show-confidence"
-                type="checkbox"
-                className="w-4 h-4"
-                checked={showConfidence}
-                onChange={() => setShowConfidence(!showConfidence)}
-              />
-              <label htmlFor="show-confidence" className="ms-2">
-                Confidence
-              </label>
-            </div>
-            <div className="flex items-center ml-4">
-              <input
-                id="show-sentimental"
-                type="checkbox"
-                className="w-4 h-4"
-                checked={showSentimentalAnalysis}
-                onChange={() =>
-                  setShowSentimentalAnalysis(!showSentimentalAnalysis)
-                }
-              />
-              <label htmlFor="show-sentimental" className="ms-2">
-                Sentimental Analysis
-              </label>
-            </div>
-            <div className="flex items-center ml-4">
-              <input
-                id="show-content-safety"
-                type="checkbox"
-                className="w-4 h-4"
-                checked={showContentSafety}
-                onChange={() => setShowContentSafety(!showContentSafety)}
-              />
-              <label htmlFor="show-content-safety" className="ms-2">
-                Content Safety
-              </label>
-            </div>
+            <Checkbox
+              id="show-confidence"
+              label="Confidence"
+              checked={showConfidence}
+              onChange={() => setShowConfidence(!showConfidence)}
+            />
+            <div className="w-4" />
+            <Checkbox
+              id="show-sentimental"
+              label="Sentimental Analysis"
+              checked={showSentimentalAnalysis}
+              onChange={() =>
+                setShowSentimentalAnalysis(!showSentimentalAnalysis)
+              }
+            />
+            <div className="w-4" />
+            <Checkbox
+              id="show-content-safety"
+              label="Content Safety"
+              checked={showContentSafety}
+              onChange={() => setShowContentSafety(!showContentSafety)}
+            />
           </div>
           <Audio
             ref={audioRef}
@@ -139,10 +124,10 @@ const Transcript = (props: {
       <Link href="/" className="underline block">
         Home
       </Link>
-      <hr className="my-4" />
-      <h1 className="font-bold text-2xl mb-4">{props.transcript.summary}</h1>
-      <hr className="my-4" />
-      <h2 className="font-bold text-lg mb-4">Content Safety</h2>
+      <Divider />
+      <H1>{props.transcript.summary}</H1>
+      <Divider />
+      <H2>Content Safety</H2>
       {Object.keys(props.transcript.content_safety_labels!.summary).map(
         (key) => {
           const content = contentModeration(key);
@@ -155,8 +140,8 @@ const Transcript = (props: {
           );
         }
       )}
-      <hr className="my-4" />
-      <h2 className="font-bold text-lg mb-4">Transcript</h2>
+      <Divider />
+      <H2>Transcript</H2>
 
       {props.transcript.utterances?.map((utterance, index) => (
         <div key={index} className="py-2">
@@ -273,29 +258,3 @@ const Word = ({
     </span>
   );
 };
-
-// https://stackoverflow.com/a/15203639
-function isElementVisible(element: HTMLElement) {
-  const rect = element.getBoundingClientRect();
-  const vWidth = window.innerWidth || document.documentElement.clientWidth;
-  const vHeight = window.innerHeight || document.documentElement.clientHeight;
-  const offset = 200;
-
-  // Return false if it's not in the viewport
-  if (
-    rect.right < 0 ||
-    rect.bottom - offset < 0 ||
-    rect.left > vWidth ||
-    rect.top + offset > vHeight
-  ) {
-    return false;
-  }
-
-  // Return true if any of its four corners are visible
-  return (
-    element.contains(document.elementFromPoint(rect.left, rect.top)) ||
-    element.contains(document.elementFromPoint(rect.right, rect.top)) ||
-    element.contains(document.elementFromPoint(rect.right, rect.bottom)) ||
-    element.contains(document.elementFromPoint(rect.left, rect.bottom))
-  );
-}
