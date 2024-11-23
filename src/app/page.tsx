@@ -3,19 +3,28 @@ import { HTMLProps } from "react";
 import TranscribeActionForm from "./transcribe-action-form";
 import { Divider } from "./ui/divider";
 import { H1, H2 } from "./ui/typography";
+import Image from "next/image";
 
 export default async function Home() {
   return (
     <div className="bg-gray-50 min-h-screen flex items-center">
       <div className="min-w-96 mx-auto p-8 bg-white rounded drop-shadow">
-        <H1>Transcribe</H1>
-
-        <TranscribeActionForm />
-
+        <div className="flex flex-col items-center">
+          <Link href="https://assembly.ai/" target="_blank">
+            <span className="text-sm">Powered by</span>
+            <Image
+              src="/assembly-ai.svg"
+              width={140}
+              height={24}
+              alt="assembly ai logo"
+            />
+          </Link>
+        </div>
         <Divider />
-
-        <H2>Demo</H2>
-
+        <H1>Transcribe</H1>
+        <TranscribeActionForm />
+        <Divider />
+        <H2>Samples</H2>
         <MyLink href="/transcripts/a60ec53a-32df-4930-be47-ccffdafdf3d4">
           wildfires.mp3
         </MyLink>
