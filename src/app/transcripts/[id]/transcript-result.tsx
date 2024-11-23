@@ -128,17 +128,22 @@ const Transcript = (props: {
       <H1>{props.transcript.summary}</H1>
       <Divider />
       <H2>Content Safety</H2>
-      {Object.keys(props.transcript.content_safety_labels!.summary).map(
-        (key) => {
-          const content = contentModeration(key);
+      {props.transcript.content_safety_labels &&
+      Object.keys(props.transcript.content_safety_labels.summary).length > 0 ? (
+        Object.keys(props.transcript.content_safety_labels.summary).map(
+          (key) => {
+            const content = contentModeration(key);
 
-          return (
-            <p key={key} className="py-2">
-              <span className="font-bold">{content?.label}:</span>{" "}
-              {content?.description}
-            </p>
-          );
-        }
+            return (
+              <p key={key} className="py-2">
+                <span className="font-bold">{content?.label}:</span>{" "}
+                {content?.description}
+              </p>
+            );
+          }
+        )
+      ) : (
+        <p>No content safety labels found</p>
       )}
       <Divider />
       <H2>Transcript</H2>
@@ -169,6 +174,13 @@ const Transcript = (props: {
           </p>
         </div>
       ))}
+
+      <Divider />
+
+      <p>
+        <b>{props.transcript.words?.length ?? 0}</b> words with a confidence of{" "}
+        <b>{((props.transcript.confidence ?? 0) * 100).toFixed(2)}%</b>
+      </p>
     </div>
   );
 };
